@@ -19,5 +19,5 @@ int main()
     dp[2]=2;
     int sizeOfTiles;
     cin>>sizeOfTiles;
-    cout<<foo(sizeOfTiles)<<endl;;
+    cout<<foo(sizeOfTiles)<<endl;
 }
