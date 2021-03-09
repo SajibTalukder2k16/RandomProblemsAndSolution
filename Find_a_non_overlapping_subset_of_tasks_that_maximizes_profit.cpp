@@ -17,7 +17,7 @@ int foo(int pos)
     if(dp[pos]!=-1)
         return dp[pos];
     pr = mp(mp(vec[pos].first.second,vec[pos].first.second),vec[pos].second);
-    ///Here upper bound is used for finding the next task position that is posible after this positions ending time
+    ///Here upper bound is used for finding the next task position that is posible after current positions ending time
     int next = upper_bound(vec.begin(),vec.end(),pr)-vec.begin();
     dp[pos] = max(foo(pos+1),foo(next)+vec[pos].second);
     return dp[pos];
