@@ -13,7 +13,7 @@ int compute_hash(string str,int p,int mod)
     for(int i=0;i<len;i++)
     {
         hash_value=(hash_value+(str[i]-'a'+1)*p_power)%mod;
-        p_power=p;
+        p_power=(p_power*p)%mod;
     }
     return hash_value;
 }
