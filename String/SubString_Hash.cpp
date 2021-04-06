@@ -6,7 +6,7 @@ using namespace std;
 #define ll long long
 #define mp make_pair
 #define mx 100001
-int p_power[mx];
+ll p_power[mx];
 ll prefix_hash[mx];
 int pre_compute_power(int p,int mod)
 {
@@ -52,8 +52,9 @@ int main()
     pos_from-=2;
     ll to_hash=prefix_hash[pos_to];
     //cout<<to_hash<<" "<<prefix_hash[pos_from]<<" "<<BigMod(p1,dif,mod1)<<endl;
-    ll from_hash=(prefix_hash[pos_from]*BigMod(p1,dif,mod1))%mod1;
+    ll from_hash=prefix_hash[pos_from];//*BigMod(p1,dif,mod1))%mod1;
     //cout<<from_hash<<endl;
-    ll substring_hash_value=to_hash-from_hash;
+    pos_from++;
+    ll substring_hash_value=(((to_hash-from_hash)%mod1)*(BigMod(p1,mod1-1-pos_from,mod1)%mod1))%mod1;;
     cout<<substring_hash_value<<endl;
 }
