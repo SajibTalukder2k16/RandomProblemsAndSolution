@@ -5,14 +5,16 @@ using namespace std;
 #define fileWrite freopen("output.txt","w",stdout);
 #define ll long long
 #define mp make_pair
-#define mx 100001
-int p_power[mx];
+#define mx 1000001
+ll p_power[mx];
 ll prefix_hash[mx];
 int pre_compute_power(int p,int mod)
 {
     p_power[0]=1;
     for(int i=1;i<=mx;i++)
-        p_power[i]=(p_power[i-1]*p)%mod;
+    {
+        p_power[i]=((p_power[i-1]%mod)*(p%mod))%mod;
+    }
 }
 int compute_hash(string str,int p,int mod)
 {
@@ -20,9 +22,18 @@ int compute_hash(string str,int p,int mod)
     int len=str.length();
     for(int i=0;i<len;i++)
     {
-        hash_value=(hash_value+(str[i]-'a'+1)*p_power[i])%mod;
-        prefix_hash[i]=hash_value;
-        //cout<<hash_value<<endl;
+        hash_value=(hash_value%mod+((str[i]-'a'+1)%mod*(p_power[i]%mod))%mod)%mod;
+        prefix_hash[i]=hash_value%mod;
+    }
+    return hash_value;
+}
+int single_hash_compute(string str,int p,int mod)
+{
+    ll hash_value = 0;
+    int len=str.length();
+    for(int i=0;i<len;i++)
+    {
+        hash_value=(hash_value%mod+((str[i]-'a'+1)*p_power[i]%mod)%mod)%mod;
     }
     return hash_value;
 }
@@ -36,24 +47,52 @@ ll BigMod(ll base,ll power,ll mod)
         res=(base*res)%mod;
     return res;
 }
+int BinarySearch(vector<int>vec,int val)
+{
+    int l=0;
+    int h=vec.size()-1;//.size();
+    while(l<=h)
+    {
+        int mid=(l+h)/2;
+        if(vec[mid]==val)
+        {
+            return mid;
+        }
+        else if(vec[mid]>val)
+        {
+            h=mid-1;
+        }
+        else
+            l=mid+1;
+    }
+    return -1;
+}
 int main()
 {
     ll p1=29;
     ll mod1=1e9+7;
     pre_compute_power(p1,mod1);
-    string a;
-    cin>>a;
-    ll h1=compute_hash(a,p1,mod1);
-    ///substring hash
-    int pos_from,pos_to;///1 indexing
-    cin>>pos_from>>pos_to;;
-    int dif=pos_to-pos_from+1;
-    pos_to--;
-    pos_from-=2;
-    ll to_hash=prefix_hash[pos_to];
-    //cout<<to_hash<<" "<<prefix_hash[pos_from]<<" "<<BigMod(p1,dif,mod1)<<endl;
-    ll from_hash=(prefix_hash[pos_from]*BigMod(p1,dif,mod1))%mod1;
-    //cout<<from_hash<<endl;
-    ll substring_hash_value=to_hash-from_hash;
-    cout<<substring_hash_value<<endl;
+    int no_of_strings;
+    cin>>no_of_strings;
+    string str;
+    vector<int>vec;
+    for(int i=0;i<no_of_strings;i++)
+    {
+        cin>>str;
+        ll hash_value=single_hash_compute(str,p1,mod1);
+        vec.push_back(hash_value);
+    }
+    sort(vec.begin(),vec.end());
+    int no_of_query;
+    cin>>no_of_query;
+    for(int i=0;i<no_of_query;i++)
+    {
+        cin>>str;
+        ll hash_value=single_hash_compute(str,p1,mod1);
+        int val = BinarySearch(vec,hash_value);
+        if(val==-1)
+            cout<<"NO"<<endl;
+        else
+            cout<<"YES"<<endl;
+    }
 }
