@@ -35,6 +35,23 @@ int main()
 {
     int a,b;
     cin>>a>>b;
+    bool a_sign=true,a_sign=true;
+    if(a<0)
+    {
+        a=-a;
+        a_sign=false;
+    }
+    if(b<0)
+    {
+        b=-b;
+        b_sign=false;
+    }
+    if(b>a)
+        swap(a,b);
     int g=ext_gcd(a,b);
+    if(a_sign==false)
+        val_x=-val_x;
+    if(b_sign==false)
+        val_y=-val_y;
     cout<<val_x<<" "<<val_y<<" "<<g<<endl;
 }
