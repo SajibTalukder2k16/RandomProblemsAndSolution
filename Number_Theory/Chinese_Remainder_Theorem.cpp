@@ -7,7 +7,7 @@ using namespace std;
 #define ll long long
 #define mp make_pair
 #define mx 1000005
-int ext_gcd(int a,int b,int &val_x,int &val_y)
+ll ext_gcd(ll a,ll b,ll *val_x,ll *val_y)
 {
     bool a_sign=true,b_sign=true;
     if(a<0)
@@ -26,11 +26,11 @@ int ext_gcd(int a,int b,int &val_x,int &val_y)
         swap(a,b);
         s=true;
     }
-    int x1=1,y1=0;
-    int x2=0,y2=1;
-    int r1=a;
-    int r2=b;
-    int xi,yi,ri,qi;
+    ll x1=1,y1=0;
+    ll x2=0,y2=1;
+    ll r1=a;
+    ll r2=b;
+    ll xi,yi,ri,qi;
     while(r1%r2!=0)
     {
         ri=r1%r2;
@@ -43,32 +43,36 @@ int ext_gcd(int a,int b,int &val_x,int &val_y)
         //cout<<qi<<" "<<ri<<" "<<xi<<" "<<yi<<endl;
     }
     //cout<<x2<<" "<<y2<<" "<<r2<<endl;
-    val_x=x2;
-    val_y=y2;
+    *val_x=x2;
+    *val_y=y2;
     if(a_sign==false)
-        val_x=-val_x;
+        *val_x=-*val_x;
     if(b_sign==false)
-        val_y=-val_y;
+        *val_y=-*val_y;
     if(s==true)
-        swap(val_x,val_y);
+        swap(*val_x,*val_y);
     return r2;
 }
 int main()
 {
     int n;
     cin>>n;
-    int rem[n],mod[n];
+    ll rem[n],mod[n];
     for(int i=0;i<n;i++)
         cin>>mod[i]>>rem[i];
-    for(int i=0;i<n-1;i++)
+    ll a1 = rem[0];
+    ll m1 = mod[0];
+    ll p, q;
+    for(int i=1;i<n;i++)
     {
-        int x,y;
-        ext_gcd(mod[i],mod[i+1],x,y);
-        ll temp=mod[i]*x*rem[i+1]+mod[i+1]*y*rem[i];
-        mod[i+1]=mod[i]*mod[i+1];
-        temp%=mod[i+1];
-        rem[i+1]=temp;
-        //cout<<mod[i]<<" "<<mod[i+1]<<" "<<rem[i]<<" "<<rem[i+1]<<" "<<temp<<endl;
+        ll a2 = rem[i];
+        ll m2 = mod[i];
+        ext_gcd(m1, m2, &p, &q);
+        ll val=m1*m2;
+        ll x = ((((a1%val)*(m2%val))%val*q%val)%val + (((a2%val)*(m1%val))%val*p%val)%val) % (val);
+        a1 = x;
+        m1 = m1 * m2;
     }
-    cout<<rem[n-1]<<endl;
+    if (a1 < 0) a1 += m1;
+    cout<<a1<<endl;
 }
