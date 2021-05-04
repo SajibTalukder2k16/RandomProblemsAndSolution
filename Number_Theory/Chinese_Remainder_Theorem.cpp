@@ -40,9 +40,7 @@ ll ext_gcd(ll a,ll b,ll *val_x,ll *val_y)
         r1=r2;r2=ri;
         x1=x2;x2=xi;
         y1=y2;y2=yi;
-        //cout<<qi<<" "<<ri<<" "<<xi<<" "<<yi<<endl;
     }
-    //cout<<x2<<" "<<y2<<" "<<r2<<endl;
     *val_x=x2;
     *val_y=y2;
     if(a_sign==false)
